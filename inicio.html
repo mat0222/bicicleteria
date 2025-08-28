@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOBI Bike - Sistema de Administración</title>
+    <link rel="stylesheet" href="inicio.css">
+    <link rel="icon" href="imagen/FOBIBikeWeb.ico" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="imagen/FOBIBike.png" alt="FOBI Bike Logo">
+            </div>
+
+            <!-- Búsqueda -->
+            <div class="search-section">
+                <h3>Búsqueda</h3>
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos...">
+            </div>
+
+            <!-- Filtro por Categoría -->
+            <div class="filter-section">
+                <h3 onclick="toggleFilter('category')">
+                    Categorías
+                    <span id="categoryArrow">▼</span>
+                </h3>
+                <div class="filter-options active" id="categoryOptions">
+                    <div class="filter-option">
+                        <input type="radio" id="all" name="category" value="all" checked>
+                        <label for="all">Todos los productos</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" id="bicicletas" name="category" value="bicicletas">
+                        <label for="bicicletas">Bicicletas</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" id="accesorios" name="category" value="accesorios">
+                        <label for="accesorios">Accesorios</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" id="repuestos" name="category" value="repuestos">
+                        <label for="repuestos">Repuestos</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" id="indumentarias" name="category" value="indumentarias">
+                        <label for="indumentarias">Indumentaria</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtro por Proveedor -->
+            <div class="filter-section">
+                <h3 onclick="toggleFilter('supplier')">
+                    Proveedor
+                    <span id="supplierArrow">▼</span>
+                </h3>
+                <div class="filter-options" id="supplierOptions">
+                    <select class="select-filter" id="supplierSelect">
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filtro por Tipo -->
+            <div class="filter-section">
+                <h3 onclick="toggleFilter('type')">
+                    Tipo
+                    <span id="typeArrow">▼</span>
+                </h3>
+                <div class="filter-options" id="typeOptions">
+                    <select class="select-filter" id="typeSelect">
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filtro por Stock -->
+            <div class="filter-section">
+                <h3 onclick="toggleFilter('stock')">
+                    Estado de Stock
+                    <span id="stockArrow">▼</span>
+                </h3>
+                <div class="filter-options" id="stockOptions">
+                    <div class="filter-option">
+                        <input type="checkbox" id="inStock" value="in-stock">
+                        <label for="inStock">En Stock</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="lowStock" value="low-stock">
+                        <label for="lowStock">Stock Bajo</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="outStock" value="out-of-stock">
+                        <label for="outStock">Sin Stock</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="clear-filters" onclick="clearAllFilters()">Limpiar Filtros</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Sistema de Administración</h2>
+            </div>
+
+            <div class="category-tabs">
+                <button class="tab-button active" onclick="showCategory('all')">Todos</button>
+                <button class="tab-button" onclick="showCategory('bicicletas')">Bicicletas</button>
+                <button class="tab-button" onclick="showCategory('accesorios')">Accesorios</button>
+                <button class="tab-button" onclick="showCategory('repuestos')">Repuestos</button>
+                <!-- Agregando tab de Indumentaria -->
+                <button class="tab-button" onclick="showCategory('indumentarias')">Indumentaria</button>
+            </div>
+
+            <!-- Agregando botón Agregar Nuevo que cambia según la categoría -->
+            <button class="add-button" id="addButton" onclick="openAddModal()" style="display: none;">
+                + Agregar Nuevo Producto
+            </button>
+
+            <div class="results-count" id="resultsCount">Mostrando 0 productos</div>
+
+            <div class="product-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Precio Contado</th>
+                            <th>Precio a Plazo</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr>
+                            <td colspan="6" class="no-results">Cargando productos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+   <!-- Modal - debe estar al final del body, justo antes del cierre -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeAddModal()">&times;</span>
+        <h2 id="modalTitle">Agregar Nuevo Producto</h2>
+        <form id="addProductForm">
+            <input type="hidden" id="editMode" value="false">
+            <input type="hidden" id="editProductCode">
+
+            <label for="productName">Codigo del Producto:</label>
+            <input type="text" id="productCode" name="productCode" required>
+            
+            <label for="productName">Nombre del Producto:</label>
+            <input type="text" id="productName" name="productName" required>
+            
+            <label for="productSupplier">Proveedor:</label>
+            <select id="productSupplier" name="productSupplier" required>
+                <option value="">Seleccionar proveedor</option>
+            </select>
+            
+            <label for="productType">Tipo:</label>
+            <select id="productType" name="productType" required>
+                <option value="">Seleccionar tipo</option>
+            </select>
+            
+            <label for="productPriceCash">Precio Contado:</label>
+            <input type="number" id="productPriceCash" name="productPriceCash" step="0.01" min="0" required>
+            
+            <label for="productPriceInstallment">Precio en Cuotas:</label>
+            <input type="number" id="productPriceInstallment" name="productPriceInstallment" step="0.01" min="0" required>
+            
+            <label for="productStock">Stock:</label>
+            <input type="number" id="productStock" name="productStock" min="0" required>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" id="saveProductBtn">Guardar</button>
+                <button type="button" onclick="closeAddModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script src="inicio.js"></script>
+</body>
+</html>
+
