@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FobiBike - Iniciar Sesión</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="imagen/FOBIBikeWeb.ico" type="image/png">
+</head>
+<body>
+    <div class="login-container">
+        <div id="loginScreen">
+            <div class="login-header">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fobibikelogo-Photoroom-k4kW9nFAm1tfJZzghyKEkeKzcjujhS.png" alt="FobiBike Logo" class="logo">
+                <div class="bike-decoration">🚴</div>
+                <h1>FobiBike</h1>
+                <p>Tu bicicletería de confianza</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Ingresa tu usuario" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    Usuario o contraseña incorrectos
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    Iniciar Sesión
+                </button>
+            </form>
+        </div>
+        
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="bike-icon">🚴‍♂️</div>
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fobibikelogo-Photoroom-k4kW9nFAm1tfJZzghyKEkeKzcjujhS.png" alt="FobiBike Logo" class="welcome-logo">
+            <h2>¡Bienvenido Eduardo!</h2>
+            <p>Nos alegra verte de nuevo en FobiBike</p>
+            <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>
